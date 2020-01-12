@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
 	public GameObject MoveEffect;
 	public GameObject KillEffect;
-
+ 
     private GameManager gm;
 
     private void Start()
@@ -26,15 +26,15 @@ public class PlayerController : MonoBehaviour
     {
 		Movement();
 		Health();
+        Clamp();
     }
 
 	private void Health()
 	{
 		if(health == 0)
 		{
-			Instantiate(KillEffect, transform.position, Quaternion.identity); //Instantiate particle system KillEffect
+            Instantiate(KillEffect, transform.position, Quaternion.identity); //Instantiate particle system KillEffect
 			gameObject.SetActive(false);
-            Debug.Log("health is zero!");
 		}
 	}
 
@@ -53,6 +53,14 @@ public class PlayerController : MonoBehaviour
 			Instantiate(MoveEffect, transform.position, Quaternion.identity);
 		}
 	}
+
+    private void Clamp()
+    {
+        Vector3 clampedPosition = transform.position;
+
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minHeight, maxHeight);
+        transform.position = clampedPosition;
+    }
 
     public void UpButton() //Up button if position of the player is less than max height
     {
